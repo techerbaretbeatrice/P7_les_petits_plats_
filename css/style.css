@@ -1,0 +1,30 @@
+@import '/css/normalise.css';
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'DM', sans-serif;
+}
+
+
+header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 42px;
+}
+
+#logo {
+    width: 51px
+}
+
+.title {
+    color: #D04F4F;
+    margin: 0px;
+}
