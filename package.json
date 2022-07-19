@@ -1,0 +1,19 @@
+{
+  "name": "developper_un_algorithme_de_recherche_en_javascript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techerbaretbeatrice/P7_les_petits_plats_.git"
+  },
+  "author": "techer beatrice",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/techerbaretbeatrice/P7_les_petits_plats_/issues"
+  },
+  "homepage": "https://github.com/techerbaretbeatrice/P7_les_petits_plats_#readme"
+}
