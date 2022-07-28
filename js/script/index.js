@@ -1,20 +1,100 @@
 const params = (new URL(document.location)).searchParams
 const recipeId = params.get('recipe')
 
+const mainInput = document.getElementById('main-search')
+mainInput.value = location.hash.replace('#', '')
+mainInput.addEventListener('keyup', (event) => {
+
+    const mainField = mainInput.value
+    console.log(mainInput.value)
+
+    location.hash = mainField
+    Display()
+
+
+
+})
+const search = (recipes) => {
+    // retourne la liste des recettes filtrée
+    const word = location.hash.replace("#", "")
+    const ingredientValue = params.get('ingredients')
+    console.info("aaa", ingredientValue)
+    const ingredientsList = ingredientValue?.split(',')
+    const appliancesItem = params.get('appliances')
+    const ustensilValue = params.get('ustensils')
+    const ustensilsList = ustensilValue?.split(',')
+    console.info("avec", appliancesItem)
+    console.info("mais", ustensilsList)
+    console.info("moins", ingredientsList)
+    console.info("plus", word)
+    const filteredRecipes = recipes.filter(recipe => {
+        if (recipe.name.toLowerCase().includes(word.toLowerCase())
+            || recipe.description.toLowerCase().includes(word.toLowerCase())
+            || recipe.ingredients.find(ingredient => ingredient.ingredient.toLowerCase().includes(word.toLowerCase()))
+
+        ) {
+            if (ingredientsList !== undefined
+                && ingredientsList.length > 0
+                && ingredientsList.filter(
+                    item => recipe.ingredients.find(
+                        ingredient => ingredient.ingredient.toLowerCase() == item.toLowerCase()
+                    )
+                ).length < ingredientsList.length - 1
+            ) {
+                return false
+            }
+            if (appliancesItem
+                && appliancesItem !== ""
+                && appliancesItem !== recipe.appliance
+            ) {
+                return false
+            }
+            if (ustensilsList !== undefined
+                && ustensilsList.length > 0
+                && ustensilsList.filter(
+                    item => recipe.ustensils.find(
+                        ustensil => ustensil.toLowerCase() == item.toLowerCase()
+                    )
+                ).length < ustensilsList.length - 1
+            ) {
+                return false
+            }
+
+
+            return true
+        }
+    })
+
+
+    return filteredRecipes
+}
+
+
 const Display = async () => {
 
     // eslint-disable-next-line no-undef
     const data = await fetchData()
-    const recipes = data.recipes
+    // transformer en let, parce qu'on va modifier la liste avec la recherche
+    let recipes = data.recipes
     console.log(data)
     console.log(recipes)
+    location.hash
+
+    console.log("plus", search(recipes))
+    if (location.hash.replace("#", '').length >= 3
+        || Array.from(params.values()).length > 0
+    ) {
+        recipes = search(recipes)
+    }
     const tagDisplay = document.createElement('div')
     tagDisplay.setAttribute('class', 'tag-display')
     const tagResearchContainer = document.createElement('div')
     tagResearchContainer.setAttribute('id', 'tag-research-container')
-    document.getElementById('heading').appendChild(tagDisplay)
-    document.getElementById('heading').appendChild(tagResearchContainer)
+    document.getElementById('heading-filters').textContent = ''
+    document.getElementById('heading-filters').appendChild(tagDisplay)
+    document.getElementById('heading-filters').appendChild(tagResearchContainer)
     const ingredientList = new Set()
+    console.log(ingredientList)
     const applianceList = new Set()
     const ustensilList = new Set()
     recipes.forEach(recipe => recipe.ingredients.forEach(ingredient => ingredientList.add(ingredient.ingredient)))
@@ -29,10 +109,13 @@ const Display = async () => {
     tagResearchContainer.appendChild(ingredientFilter)
     tagResearchContainer.appendChild(applianceFiter)
     tagResearchContainer.appendChild(ustensilFilter)
-
+    document.getElementById('main').textContent = ''
     document.getElementById('main').appendChild(recipesList)
 
 }
+
+
+
 
 const Tag = (tag, type, multiple) => {
     const tagElement = document.createElement('div')
@@ -45,6 +128,7 @@ const Tag = (tag, type, multiple) => {
         const params = new URLSearchParams(url.search)
         if (multiple) {
             const values = params.get(type) || ''
+            console.log(values)
             const valueSet = new Set(values.split(','))
             console.log(valueSet)
             valueSet.add(tag)
@@ -53,7 +137,7 @@ const Tag = (tag, type, multiple) => {
         } else {
             params.set(type, tag)
         }
-        location.href = "?" + params.toString()
+        location.href = "?" + params.toString() + location.hash
     })
     return tagElement
 }
@@ -62,13 +146,10 @@ const SelectFilter = (title, dataList, dataType, multiple) => {
     let opened = false
     const selectFilter = document.createElement('div')
     selectFilter.setAttribute('class', `btn-filter ${dataType} opened-${opened}`)
-    //selectFilter.setAttribute('id', 'select-btn ')
     const iconOpen = document.createElement('i')
     iconOpen.setAttribute('class', 'fa-solid fa-angle-down white')
     const filterDisplay = document.createElement('div')
     filterDisplay.setAttribute('class', `filter-display ${dataType}`)
-    //filterDisplay.setAttribute('id', 'display')
-    //filterDisplay.textContent = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sem nunc, gravida vel massa vel, volutpat pulvinar purus. Nullam a lacus pellentesque, laoreet lacus eu, tincidunt risus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Aenean et iaculis magna. Vivamus id lectus libero. Donec ornare at mauris eu vestibulum. Proin ut diam vel orci rhoncus efficitur sit amet ac tellus. Cras facilisis tristique libero vel sollicitudin. In varius auctor mi, at tincidunt arcu ornare id. Nulla convallis turpis sed libero placerat, non ornare ligula placerat. Donec pretium egestas lorem, vitae suscipit sem fringilla et. Duis pharetra ex vitae ullamcorper ornare.'
     for (let item of dataList) {
         const tag = Tag(item, dataType, multiple)
         filterDisplay.appendChild(tag)
@@ -76,9 +157,13 @@ const SelectFilter = (title, dataList, dataType, multiple) => {
     const placeholder = document.createElement('span')
     placeholder.setAttribute('class', 'placeholder')
     placeholder.textContent = title
+    const inputPlaceholder = ` ${title}`
+    console.log(inputPlaceholder)
+    const newInputPlaceholder = inputPlaceholder.substring(0, inputPlaceholder.length - 1)
+    console.log(newInputPlaceholder)
     const input = document.createElement('input')
     input.setAttribute('class', 'form')
-    input.setAttribute('placeholder', 'Rechercher item')
+    input.setAttribute('placeholder', `Rechercher un ${newInputPlaceholder.toLowerCase()}`)
     const controlGroup = document.createElement('div')
     controlGroup.setAttribute('class', 'control-group')
     selectFilter.appendChild(controlGroup)
@@ -106,6 +191,20 @@ const SelectFilter = (title, dataList, dataType, multiple) => {
         }
     }
 
+    input.addEventListener('keyup', inputSearch)
+    function inputSearch(event) {
+        const inputField = input.value
+        filterDisplay.textContent = ""
+        console.log(inputField)
+        console.log(event)
+        const list = Array.from(dataList)
+        const filteredList = list.filter(item => item.toLowerCase().includes(inputField.toLowerCase()))
+        filteredList.forEach(item => {
+            const tag = Tag(item, dataType, multiple)
+            filterDisplay.appendChild(tag)
+        })
+
+    }
     return selectFilter
 }
 
@@ -142,7 +241,18 @@ const TagBtn = (type, value) => {
     tagBtn.appendChild(tagBtnClose)
     tagBtnClose.addEventListener('click', tagClose)
     function tagClose() {
-
+        const url = new URL(document.location.href)
+        const params = new URLSearchParams(url.search)
+        const values = params.get(type) || ''
+        console.log(values)
+        const valueList = values.split(',')
+        console.log(valueList)
+        const filteredList = valueList.filter((item) => item !== value)
+        console.log(filteredList)
+        const newTag = filteredList.join(',')
+        params.set(type, newTag)
+        console.log(params.get(type))
+        location.href = "?" + params.toString() + location.hash
     }
 
     return tagBtn
@@ -232,6 +342,13 @@ const IngredientItem = (ingredient) => {
     const ingredientUnit = document.createElement('span')
     ingredientUnit.setAttribute('class', 'ingredient-unit')
     ingredientUnit.textContent = `${ingredient.unit || ''}`
+    const convert = ingredient.unit
+    console.log(convert)
+    if (convert === 'grammes') {
+        const convertUnit = convert.replace('grammes', 'g')
+        console.log(convertUnit)
+        ingredientUnit.textContent = convertUnit
+    }
     ingredientItem.appendChild(ingredientLabel)
     ingredientItem.appendChild(ingredientQuantity)
     ingredientItem.appendChild(ingredientUnit)
