@@ -254,7 +254,7 @@ header {
     right: 0px;
 }
 
-#recipe-card {
+.card {
     width: 380px;
     height: 364px;
     background: #E7E7E7;
