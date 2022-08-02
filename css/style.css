@@ -67,11 +67,21 @@ header {
 #main-research .input-group-append {
     background: #E5E5E5;
     border-radius: 0px 5px 5px 0px;
+    display: flex;
+    align-items: center;
 }
 
 #main-research .btn-outline-secondary {
     border: none;
+
 }
+
+#main-research .btn-outline-secondary:hover {
+    border: none;
+    background-color: transparent;
+}
+
+
 
 #main-research .form-control::placeholder {
     font-family: 'Lato';
@@ -85,6 +95,7 @@ header {
 
 .size {
     font-size: 32.06px;
+    color: #000000;
 }
 
 .tag-display {
