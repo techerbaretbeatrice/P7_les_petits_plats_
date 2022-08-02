@@ -16,62 +16,8 @@ mainInput.addEventListener('keyup', (event) => {
 
 
 })
+
 const search = (recipes) => {
-    // retourne la liste des recettes filtrée array method
-    const word = location.hash.replace("#", "")
-    const ingredientValue = params.get('ingredients')
-    console.info("aaa", ingredientValue)
-    const ingredientsList = ingredientValue?.split(',')
-    const appliancesItem = params.get('appliances')
-    const ustensilValue = params.get('ustensils')
-    const ustensilsList = ustensilValue?.split(',')
-    console.info("avec", appliancesItem)
-    console.info("mais", ustensilsList)
-    console.info("moins", ingredientsList)
-    console.info("plus", word)
-    const filteredRecipes = recipes.filter(recipe => {
-        if (recipe.name.toLowerCase().includes(word.toLowerCase())
-            || recipe.description.toLowerCase().includes(word.toLowerCase())
-            || recipe.ingredients.find(ingredient => ingredient.ingredient.toLowerCase().includes(word.toLowerCase()))
-
-        ) {
-            if (ingredientsList !== undefined
-                && ingredientsList.length > 0
-                && ingredientsList.filter(
-                    item => recipe.ingredients.find(
-                        ingredient => ingredient.ingredient.toLowerCase() == item.toLowerCase()
-                    )
-                ).length < ingredientsList.length - 1
-            ) {
-                return false
-            }
-            if (appliancesItem
-                && appliancesItem !== ""
-                && appliancesItem !== recipe.appliance
-            ) {
-                return false
-            }
-            if (ustensilsList !== undefined
-                && ustensilsList.length > 0
-                && ustensilsList.filter(
-                    item => recipe.ustensils.find(
-                        ustensil => ustensil.toLowerCase() == item.toLowerCase()
-                    )
-                ).length < ustensilsList.length - 1
-            ) {
-                return false
-            }
-
-
-            return true
-        }
-    })
-
-
-    return filteredRecipes
-}
-
-/*const search = (recipes) => {
     // retourne la liste des recettes filtrée nativ loops
     const word = location.hash.replace("#", "")
     const ingredientValue = params.get('ingredients')
@@ -146,7 +92,7 @@ const search = (recipes) => {
     }
     return filteredRecipes
 
-}*/
+}
 
 //permet l'affichage toujours réactualisé de la page
 const Display = async () => {
