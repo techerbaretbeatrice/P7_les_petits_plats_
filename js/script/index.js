@@ -87,6 +87,7 @@ const Display = async () => {
     //donne les conditions qui lance l'algorithme de recherche,le filtrage et l'affichage des recettes correspondantes
     if (location.hash.replace("#", '').length >= 3
         || Array.from(params.values()).length > 0
+        && Array.from(params.values()).find(value => value !== '')
     ) {
         recipes = search(recipes)
     }

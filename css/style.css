@@ -23,6 +23,9 @@ header {
     display: flex;
     flex-direction: column;
     padding-top: 42px;
+    width: 100%;
+    max-width: 1440px;
+    align-items: center;
 }
 
 #heading-logo {
@@ -47,7 +50,8 @@ header {
 
 
 #main-research {
-    width: 1240px;
+    max-width: 1240px;
+    width: 100%;
     margin-top: 17px;
     height: 69px;
 }
@@ -147,6 +151,17 @@ header {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+    width: 100%;
+    max-width: 1240px;
+
+}
+
+#heading-filters {
+    width: 100%;
+    max-width: 1240px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .btn-filter {
@@ -171,6 +186,7 @@ header {
 .btn-filter.opened-true {
     min-height: 69px;
     max-height: none;
+    max-width: 667px;
 }
 
 .btn-filter.ingredients {
@@ -193,6 +209,7 @@ header {
     width: auto;
     min-height: 0px;
     flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .control-group {
@@ -244,7 +261,15 @@ header {
 
 .filter-display .tag {
     width: 30%;
-    padding-left: 8px;
+    padding-left: 19px;
+}
+
+.tag {
+    width: auto;
+    height: auto;
+    margin-right: 15px;
+    margin-bottom: 16px;
+
 }
 
 .white {
