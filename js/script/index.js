@@ -22,10 +22,10 @@ const search = (recipes) => {
     const word = location.hash.replace("#", "")
     const ingredientValue = params.get('ingredients')
     console.info("aaa", ingredientValue)
-    const ingredientsList = ingredientValue?.split(',')
+    const ingredientsList = ingredientValue?.split(',') || ['']
     const appliancesItem = params.get('appliances')
     const ustensilValue = params.get('ustensils')
-    const ustensilsList = ustensilValue?.split(',')
+    const ustensilsList = ustensilValue?.split(',') || ['']
     console.info("avec", appliancesItem)
     console.info("mais", ustensilsList)
     console.info("moins", ingredientsList)
@@ -75,6 +75,7 @@ const search = (recipes) => {
             if (matchedUstensils.length !== ustensilsList.length - 1) {
                 isRecipeMatchedFilters = false
             }
+
             if (appliancesItem
                 && appliancesItem !== ""
                 && appliancesItem !== recipe.appliance
@@ -110,6 +111,7 @@ const Display = async () => {
     //donne les conditions qui lance l'algorithme de recherche,le filtrage et l'affichage des recettes correspondantes
     if (location.hash.replace("#", '').length >= 3
         || Array.from(params.values()).length > 0
+        && Array.from(params.values()).find(value => value !== '')
     ) {
         recipes = search(recipes)
     }
