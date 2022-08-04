@@ -16,6 +16,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-left: 50px;
+    padding-right: 50px;
 }
 
 
@@ -104,7 +106,7 @@ header {
 
 .tag-display {
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
     margin-top: 10px;
     margin-bottom: 15px;
 }
@@ -120,6 +122,7 @@ header {
     border-radius: 5px;
     height: 37px;
     padding: 0px 20px 0px 20px;
+    margin-top: 2px;
 }
 
 .tag-btn.ingredients {
@@ -149,8 +152,7 @@ header {
 
 #tag-research-container {
     display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
+    flex-wrap: wrap;
     width: 100%;
     max-width: 1240px;
 
@@ -181,6 +183,7 @@ header {
     display: flex;
     flex-direction: column;
     cursor: pointer;
+    margin-top: 2px;
 }
 
 .btn-filter.opened-true {
