@@ -354,7 +354,6 @@ const RecipesList = (recipes) => {
 //créer une card pour chaque recette 
 const Card = (recipe) => {
     const card = document.createElement('div')
-    card.setAttribute('id', 'recipe-card')
     card.setAttribute('class', 'card')
     card.setAttribute('aria-description', recipe.name)
     card.setAttribute('tabindex', '0')
