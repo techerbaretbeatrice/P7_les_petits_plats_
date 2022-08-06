@@ -262,7 +262,7 @@ header {
 }
 
 .filter-display .tag {
-    width: 30%;
+    min-width: 30%;
     padding-left: 19px;
 
 }
