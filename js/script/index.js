@@ -8,7 +8,6 @@ mainInput.value = location.hash.replace('#', '')
 mainInput.addEventListener('keyup', (event) => {
 
     const mainField = mainInput.value
-    console.log(mainInput.value)
 
     location.hash = mainField
     Display()
@@ -20,15 +19,10 @@ const search = (recipes) => {
     // retourne la liste des recettes filtrée array method
     const word = location.hash.replace("#", "")
     const ingredientValue = params.get('ingredients')
-    console.info("aaa", ingredientValue)
     const ingredientsList = ingredientValue?.split(',')
     const appliancesItem = params.get('appliances')
     const ustensilValue = params.get('ustensils')
     const ustensilsList = ustensilValue?.split(',')
-    console.info("avec", appliancesItem)
-    console.info("mais", ustensilsList)
-    console.info("moins", ingredientsList)
-    console.info("plus", word)
     const filteredRecipes = recipes.filter(recipe => {
         if (recipe.name.toLowerCase().includes(word.toLowerCase())
             || recipe.description.toLowerCase().includes(word.toLowerCase())
@@ -79,11 +73,8 @@ const Display = async () => {
     const data = await fetchData()
     // liste de recettes qu'on va modifier  avec la recherche
     let recipes = data.recipes
-    console.log(data)
-    console.log(recipes)
     location.hash
 
-    console.log("plus", search(recipes))
     //donne les conditions qui lance l'algorithme de recherche,le filtrage et l'affichage des recettes correspondantes
     if (location.hash.replace("#", '').length >= 3
         || Array.from(params.values()).length > 0
@@ -109,7 +100,6 @@ const Display = async () => {
     document.getElementById('heading-filters').appendChild(tagResearchContainer)
     // on stocke chaque item pour chacun des filtres en l'ajoutant dans une liste et en s'assurant que chacun de ces items ne soit représentés qu' une seule et unique fois
     const ingredientList = new Set()
-    console.log(ingredientList)
     const applianceList = new Set()
     const ustensilList = new Set()
     recipes.forEach(recipe => recipe.ingredients.forEach(ingredient => ingredientList.add(ingredient.ingredient)))
@@ -138,15 +128,11 @@ const Tag = (tag, type, multiple) => {
     tagElement.setAttribute('aria-description', `cliquer pour chercher les recettes contenant ${tag}`)
     tagElement.textContent = tag
     tagElement.addEventListener('click', (evt) => {
-        console.log(tag, type)
         const url = new URL(document.location.href)
-        console.log("search", url)
         const params = new URLSearchParams(url.search)
         if (multiple) {
             const values = params.get(type) || ''
-            console.log(values)
             const valueSet = new Set(values.split(','))
-            console.log(valueSet)
             valueSet.add(tag)
             const newTag = Array.from(valueSet.values()).join(',')
             params.set(type, newTag)
@@ -189,9 +175,7 @@ const SelectFilter = (title, dataList, dataType, multiple) => {
     placeholder.setAttribute('class', 'placeholder')
     placeholder.textContent = title
     const inputPlaceholder = ` ${title}`
-    console.log(inputPlaceholder)
     const newInputPlaceholder = inputPlaceholder.substring(0, inputPlaceholder.length - 1)
-    console.log(newInputPlaceholder)
     const input = document.createElement('input')
     input.setAttribute('class', 'form')
     input.setAttribute('tabindex', '0')
@@ -236,8 +220,6 @@ const SelectFilter = (title, dataList, dataType, multiple) => {
     function inputSearch(event) {
         const inputField = input.value
         filterDisplay.textContent = ""
-        console.log(inputField)
-        console.log(event)
         const list = Array.from(dataList)
         const filteredList = list.filter(item => item.toLowerCase().includes(inputField.toLowerCase()))
         filteredList.forEach(item => {
@@ -292,14 +274,10 @@ const TagBtn = (type, value) => {
         const url = new URL(document.location.href)
         const params = new URLSearchParams(url.search)
         const values = params.get(type) || ''
-        console.log(values)
         const valueList = values.split(',')
-        console.log(valueList)
         const filteredList = valueList.filter((item) => item !== value)
-        console.log(filteredList)
         const newTag = filteredList.join(',')
         params.set(type, newTag)
-        console.log(params.get(type))
         location.href = "?" + params.toString() + location.hash
     }
     tagBtnClose.addEventListener('keypress', tagCloseKeyControl)
@@ -356,7 +334,6 @@ const Card = (recipe) => {
     labelBox.appendChild(cardBodyPreparationTime)
     preparationBox.appendChild(ingredientList)
     preparationBox.appendChild(recipeDescription)
-    console.log(card)
     return card
 }
 
@@ -364,7 +341,6 @@ const Card = (recipe) => {
 const CardBodyLabel = (recipe) => {
     const cardBodyLabel = document.createElement('label')
     cardBodyLabel.textContent = recipe.name
-    console.log(cardBodyLabel)
     return cardBodyLabel
 }
 
@@ -410,10 +386,8 @@ const IngredientItem = (ingredient) => {
     ingredientUnit.setAttribute('class', 'ingredient-unit')
     ingredientUnit.textContent = `${ingredient.unit || ''}`
     const convert = ingredient.unit
-    console.log(convert)
     if (convert === 'grammes') {
         const convertUnit = convert.replace('grammes', 'g')
-        console.log(convertUnit)
         ingredientUnit.textContent = convertUnit
     }
     ingredientItem.appendChild(ingredientLabel)
@@ -436,7 +410,6 @@ const RecipeDescription = (recipe) => {
     }
     descriptionItem.textContent = stringSplit
     recipeDescription.appendChild(descriptionItem)
-    console.log(stringSplit)
     return recipeDescription
 
 }
